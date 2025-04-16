@@ -130,11 +130,13 @@ Keeping the output files from quality filtering.
 <details>
 <summary>
 
-## Removing rRNA sequences </summary>
+## Removing rRNA sequences - [Sortmerna](https://github.com/sortmerna/sortmerna) </summary>
 ### Installation
     conda create -n sortmerna
     conda activate sortmerna
     conda install sortmerna
+
+### sortmerna.slurm
 
 
 
