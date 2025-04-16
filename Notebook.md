@@ -144,7 +144,7 @@ Keeping the output files from quality filtering.
     #SBATCH --ntasks=1            # Run 1 tasks
     #SBATCH --cpus-per-task=40    # Number of CPU cores per task
     #SBATCH --mem=50G            # Job memory request
-    #SBATCH --time=150:00:00
+    #SBATCH --time=150:00:00      # about 15 min
     #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
     #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
