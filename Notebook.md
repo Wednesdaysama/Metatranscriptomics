@@ -137,6 +137,32 @@ Keeping the output files from quality filtering.
     conda install sortmerna
 
 ### sortmerna.slurm
+    #!/bin/bash
+    #SBATCH --job-name=sortmerna
+    #SBATCH --output=%x.log
+    #SBATCH --nodes=1             # Run all processes on a single node
+    #SBATCH --ntasks=1            # Run 1 tasks
+    #SBATCH --cpus-per-task=40    # Number of CPU cores per task
+    #SBATCH --mem=50G            # Job memory request
+    #SBATCH --time=150:00:00
+    #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
+    #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
+    pwd; hostname; date
+
+    conda activate sortmerna
+    cd /work/ebg_lab/eb/overwinter/2025Apr/
+    for r1_file in *_R1.fastq.gz; do
+        r2_file="${r1_file/_R1.fastq.gz/_R2.fastq.gz}"
+        sample_name="${r1_file%_final_R1.fastq.gz}"
+        sortmerna \
+            --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta
+            --workdir ./sortmerna/tmp_workdir \
+            --reads "$r1_file" --reads "$r2_file" \
+            --aligned "./sortmerna/${sample_name}_rRNA.qc" \
+            --other "./sortmerna/${sample_name}_non_rRNA.qc" \
+            --sam --SQ --log --fastx --threads 40 --paired_in
+    done
+    rm -rf ./sortmerna/tmp_workdir
 
 
 
