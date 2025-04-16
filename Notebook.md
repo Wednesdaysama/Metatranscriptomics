@@ -123,5 +123,19 @@
 
         echo "Finished processing $BASENAME"
     done
-</details>
+Keeping the output files from quality filtering.
     
+</details>
+
+<details>
+<summary>
+
+## Removing rRNA sequences </summary>
+### Installation
+    conda create -n sortmerna
+    conda activate sortmerna
+    conda install sortmerna
+
+
+
+</details>
