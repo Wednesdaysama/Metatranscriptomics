@@ -57,7 +57,7 @@
     #SBATCH --ntasks=1
     #SBATCH --cpus-per-task=32    # Number of CPU cores per task
     #SBATCH --mem=100G            # Job memory request
-    #SBATCH --time=150:00:00
+    #SBATCH --time=150:00:00      # run for 7 hours
     #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
     #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
