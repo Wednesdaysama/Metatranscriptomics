@@ -78,7 +78,7 @@
         cat ${SAMPLE_PREFIX}_L00*_R1_001.fastq.gz > $MERGED_R1
         cat ${SAMPLE_PREFIX}_L00*_R2_001.fastq.gz > $MERGED_R2
 
-        # Step 1: trimming
+        # trimming
         bbduk.sh \
             in1=$MERGED_R1 \
             in2=$MERGED_R2 \
@@ -87,7 +87,7 @@
             ftm=5 \
             t=32
 
-        # Step 2: adapter trimming
+        # adapter trimming
         bbduk.sh \
             in1=${OUTPUT_DIR}/${BASENAME}_trimmed_R1.fastq.gz \
             in2=${OUTPUT_DIR}/${BASENAME}_trimmed_R2.fastq.gz \
@@ -96,7 +96,7 @@
             tbo tpe k=23 mink=11 hdist=1 ktrim=r \
             t=32
 
-        # Step 3: remove Phix contamination
+        # remove Phix contamination
         bbduk.sh \
             in1=${OUTPUT_DIR}/${BASENAME}_tbo_R1.fastq.gz \
             in2=${OUTPUT_DIR}/${BASENAME}_tbo_R2.fastq.gz \
@@ -106,7 +106,7 @@
             k=31 hdist=1 \
             t=32
 
-        # Step 4: quality filtering
+        # quality filtering
         bbduk.sh \
             in1=${OUTPUT_DIR}/${BASENAME}_phix_removed_R1.fastq.gz \
             in2=${OUTPUT_DIR}/${BASENAME}_phix_removed_R2.fastq.gz \
@@ -115,7 +115,7 @@
             qtrim=rl trimq=15 minlength=30 \
             t=32
 
-        # Cleanup: delete intermediate and merged files
+        # delete intermediate files
         rm $MERGED_R1 $MERGED_R2 \
         ${OUTPUT_DIR}/${BASENAME}_trimmed_*.fastq.gz \
         ${OUTPUT_DIR}/${BASENAME}_tbo_*.fastq.gz \
