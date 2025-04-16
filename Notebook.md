@@ -29,7 +29,7 @@
     #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
 
-    conda activate ~/bio/bin/fastqc_env
+    conda activate /home/lianchun.yi1/bio/bin/fastqc_env
     cd /work/ebg_lab/eb/250409_A00906_0696_AH3LM3DMX2-BaseCalls/Shotgun-metatranscri
     fastqc Li5245{1..8}/*.gz Li5247{1..6}/*.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
     cd /work/ebg_lab/eb/overwinter/2025Apr/fastqc
