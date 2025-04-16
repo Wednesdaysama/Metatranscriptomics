@@ -155,7 +155,7 @@ Keeping the output files from quality filtering.
         r2_file="${r1_file/_R1.fastq.gz/_R2.fastq.gz}"
         sample_name="${r1_file%_final_R1.fastq.gz}"
         sortmerna \
-            --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta
+            --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta \
             --workdir ./sortmerna/tmp_workdir \
             --reads "$r1_file" --reads "$r2_file" \
             --aligned "./sortmerna/${sample_name}_rRNA.qc" \
