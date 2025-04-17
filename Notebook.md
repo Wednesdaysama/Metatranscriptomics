@@ -16,6 +16,9 @@
     multiqc -h
     
 #### Slurm - fastqc.slurm
+For some reason, I need to activate fastqc_env before submitting the slurm work...
+
+    conda activate /home/lianchun.yi1/bio/bin/fastqc_env
     
     #!/bin/bash
     #SBATCH --job-name=fastqc      # Job name
