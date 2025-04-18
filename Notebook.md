@@ -4,9 +4,9 @@
 <details>
 <summary> 
 
-## Reads quality control </summary>
+## Reads quality control report - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) and [multiqc](https://github.com/MultiQC/MultiQC) </summary>
 
-### Reads quality control report - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) and [multiqc](https://github.com/MultiQC/MultiQC)
+### Reads quality control report 
 #### Installation
     conda create --prefix ~/bio/bin/fastqc_env
     conda activate ~/bio/bin/fastqc_env
@@ -42,7 +42,7 @@ For some reason, I have to activate fastqc_env before submitting the slurm work.
 <details>
 <summary>
 
-## Raw reads filtration </summary>
+## Raw reads filtration - BBmap </summary>
 ### Installation
     wget https://sourceforge.net/projects/bbmap/files/BBMap_39.10.tar.gz/download -O BBMap.tar.gz
     tar -xvzf BBMap.tar.gz
@@ -139,6 +139,9 @@ Keeping the output files from quality filtering.
     conda install sortmerna
 
 ### sortmerna.slurm
+    conda activate sortmerna
+Again, I have to submit this Slurm job after activating a conda env.
+
     #!/bin/bash
     #SBATCH --job-name=sortmerna
     #SBATCH --output=%x.log
