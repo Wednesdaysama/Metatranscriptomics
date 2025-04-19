@@ -15,25 +15,29 @@
     fastqc -h
     multiqc -h
     
-#### Slurm - fastqc.slurm
+#### Slurm - fastqc_multiqc.slurm
     conda activate /home/lianchun.yi1/bio/bin/fastqc_env
-For some reason, I have to activate fastqc_env before submitting the slurm work...
+For some reason, I have to activate the fastqc_env before submitting the slurm work. To avoid the OUT_OF_MEMORY error, run FastQC one by one.
     
     #!/bin/bash
-    #SBATCH --job-name=fastqc      # Job name
-    #SBATCH --output=%x.log  # Job's standard output and error log
-    #SBATCH --nodes=1             # Run all processes on a single node
-    #SBATCH --ntasks=1            # Run 1 tasks
-    #SBATCH --cpus-per-task=30    # Number of CPU cores per task
-    #SBATCH --mem=50G            # Job memory request
-    #SBATCH --time=50:00:00       #
-    #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
-    #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
+    #SBATCH --job-name=fastqc_multiqc     
+    #SBATCH --output=%x.log  
+    #SBATCH --nodes=1          
+    #SBATCH --ntasks=1           
+    #SBATCH --cpus-per-task=30    
+    #SBATCH --mem=50G            
+    #SBATCH --time=50:00:00       # 5.5 hours for 54 samples
+    #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  
+    #SBATCH --mail-type=ALL                       
     pwd; hostname; date
 
     conda activate /home/lianchun.yi1/bio/bin/fastqc_env
     cd /work/ebg_lab/eb/250409_A00906_0696_AH3LM3DMX2-BaseCalls/Shotgun-metatranscri
-    fastqc Li5245{1..8}/*.gz Li5247{1..6}/*.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
+    fastqc LY-SumRNA-MatSite6_S3_L001_R1_001.fastq.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
+    fastqc LY-SumRNA-MatSite6_S3_L001_R2_001.fastq.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
+    fastqc LY-SumRNA-MatSite6_S3_L002_R1_001.fastq.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
+    fastqc LY-SumRNA-MatSite6_S3_L002_R2_001.fastq.gz -o /work/ebg_lab/eb/overwinter/2025Apr/fastqc --svg --noextract -t 30 -k 10
+
     cd /work/ebg_lab/eb/overwinter/2025Apr/fastqc
     multiqc -o ./ -n rawReads ./
 
