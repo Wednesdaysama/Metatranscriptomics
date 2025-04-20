@@ -56,6 +56,8 @@ For some reason, I have to activate the fastqc_env before submitting the slurm w
     bbmap.sh --version
 
 ### bbduk.slurm
+Processing reads from different lanes separately.
+
     #!/bin/bash
     #SBATCH --job-name=bbduk
     #SBATCH --output=%x.log
