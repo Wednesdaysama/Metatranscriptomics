@@ -141,7 +141,7 @@ Processing reads from different lanes separately.
         echo "Finished processing $SAMPLE_NAME (Lane $LANE)"
     done
 
-Keeping the output files from quality filtering.
+Only keeping the **_final_** files from quality filtering. These files will be used as input files for rRNA cleanup.
     
 </details>
 
@@ -156,34 +156,39 @@ Keeping the output files from quality filtering.
 
 ### sortmerna.slurm
     conda activate sortmerna
-Again, I have to submit this Slurm job after activating a conda env.
+Again, I have to submit this Slurm job after activating a conda env. Also, do not use a for loop and run sortmerna commands individually.
 
     #!/bin/bash
     #SBATCH --job-name=sortmerna
     #SBATCH --output=%x.log
-    #SBATCH --nodes=1             # Run all processes on a single node
-    #SBATCH --ntasks=1            # Run 1 tasks
-    #SBATCH --cpus-per-task=40    # Number of CPU cores per task
-    #SBATCH --mem=50G            # Job memory request
-    #SBATCH --time=150:00:00      # 
+    #SBATCH --nodes=1        
+    #SBATCH --ntasks=1         
+    #SBATCH --cpus-per-task=40   
+    #SBATCH --mem=100G      
+    #SBATCH --time=150:00:00      # 10 hours for 4 paired-end reads (8 .gz files in total)
     #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
     #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
 
     conda activate sortmerna
-    cd /work/ebg_lab/eb/overwinter/2025Apr/
-    for r1_file in *_R1.fastq.gz; do
-        r2_file="${r1_file/_R1.fastq.gz/_R2.fastq.gz}"
-        sample_name="${r1_file%_final_R1.fastq.gz}"
-        sortmerna \
-            --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta \
-            --workdir ./sortmerna/tmp_workdir \
-            --reads "$r1_file" --reads "$r2_file" \
-            --aligned "./sortmerna/${sample_name}_rRNA.qc" \
-            --other "./sortmerna/${sample_name}_non_rRNA.qc" \
-            --sam --SQ --log --fastx --threads 40 --paired_in
-    done
-    rm -rf ./sortmerna/tmp_workdir
+    sortmerna --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta \
+        --workdir ./sortmerna/ \
+        --reads LY-FallRNA-MatSite3_S23_L001_final_R1.fastq.gz \
+        --reads LY-FallRNA-MatSite3_S23_L001_final_R2.fastq.gz \
+        --aligned LY-FallRNA-MatSite3_S23_L001_rRNA_reads \
+        --other LY-FallRNA-MatSite3_S23_L001_non_rRNA_reads \
+        --sam --SQ --log --fastx --threads 40 --paired_in
+    rm -r ./sortmerna/kvdb/
+
+    sortmerna --ref /work/ebg_lab/referenceDatabases/sortmerna_db/smr_v4.3_default_db.fasta \
+        --workdir ./sortmerna/ \
+        --reads LY-FallRNA-MatSite3_S23_L002_final_R1.fastq.gz \
+        --reads LY-FallRNA-MatSite3_S23_L002_final_R2.fastq.gz \
+        --aligned LY-FallRNA-MatSite3_S23_L002_rRNA_reads \
+        --other LY-FallRNA-MatSite3_S23_L002_non_rRNA_reads \
+        --sam --SQ --log --fastx --threads 40 --paired_in
+    rm -r ./sortmerna/kvdb/
+
 
 
 
