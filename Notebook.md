@@ -17,7 +17,7 @@
     
 #### Slurm - fastqc_multiqc.slurm
     conda activate /home/lianchun.yi1/bio/bin/fastqc_env
-For some reason, I have to activate the fastqc_env before submitting the slurm work. To avoid the OUT_OF_MEMORY error, run FastQC one by one.
+For some reason, I have to activate the fastqc_env before submitting the slurm work. To avoid the OUT_OF_MEMORY error, do not use a for loop and run FastQC commands individually.
     
     #!/bin/bash
     #SBATCH --job-name=fastqc_multiqc     
@@ -69,66 +69,76 @@ For some reason, I have to activate the fastqc_env before submitting the slurm w
     pwd; hostname; date
 
     INPUT_DIR="/work/ebg_lab/eb/250409_A00906_0696_AH3LM3DMX2-BaseCalls/Shotgun-metatranscri/"
-    OUTPUT_DIR="/work/ebg_lab/eb/overwinter/2025Apr/"
+    OUTPUT_DIR="/work/ebg_lab/eb/overwinter/2025Apr/seperate_lanes_bbduk"
 
-    SAMPLES=$(ls ${INPUT_DIR}/*/LY-*_R1_001.fastq.gz | sed 's/_L00.*_R1_001.fastq.gz//' | sort -u)
+    # Get all R1 files (including lane information)
+    R1_FILES=$(ls ${INPUT_DIR}/*/LY-*_L00*_R1_001.fastq.gz | sort)
 
-    for SAMPLE_PREFIX in $SAMPLES; do
+    for R1_FILE in $R1_FILES; do
+        # Extract the corresponding R2 file
+        R2_FILE=$(echo $R1_FILE | sed 's/_R1_/_R2_/')
 
-        BASENAME=$(basename $SAMPLE_PREFIX | awk -F'LY-' '{print $2}')
-        echo "Processing $BASENAME ..."
+        # Extract sample name with lane information
+        SAMPLE_NAME=$(basename $R1_FILE | awk -F'_' '{print $1 "_" $2 "_" $3}')  # Keeps LY-XXXXX_L00X
+        BASENAME=$(basename $R1_FILE | awk -F'LY-' '{print $2}' | awk -F'_L00' '{print $1}')  # Just the LY-XXXXX part
 
-        MERGED_R1=${OUTPUT_DIR}/${BASENAME}_merged_R1.fastq.gz
-        MERGED_R2=${OUTPUT_DIR}/${BASENAME}_merged_R2.fastq.gz
+        LANE=$(basename $R1_FILE | awk -F'_L00' '{print $2}' | awk -F'_' '{print $1}')
 
-        cat ${SAMPLE_PREFIX}_L00*_R1_001.fastq.gz > $MERGED_R1
-        cat ${SAMPLE_PREFIX}_L00*_R2_001.fastq.gz > $MERGED_R2
+        echo "Processing $SAMPLE_NAME (Lane $LANE) ..."
 
-        # trimming
+        # Create output filenames with lane information
+        MERGED_R1=${OUTPUT_DIR}/${SAMPLE_NAME}_R1.fastq.gz
+        MERGED_R2=${OUTPUT_DIR}/${SAMPLE_NAME}_R2.fastq.gz
+
+        # Since we're processing lanes separately, we don't need to cat files
+        # Just copy or rename the files (in case they need to be in a different directory)
+        cp $R1_FILE $MERGED_R1
+        cp $R2_FILE $MERGED_R2
+
+        # trimming - include lane in output names
         bbduk.sh \
             in1=$MERGED_R1 \
             in2=$MERGED_R2 \
-            out1=${OUTPUT_DIR}/${BASENAME}_trimmed_R1.fastq.gz \
-            out2=${OUTPUT_DIR}/${BASENAME}_trimmed_R2.fastq.gz \
+            out1=${OUTPUT_DIR}/${SAMPLE_NAME}_trimmed_R1.fastq.gz \
+            out2=${OUTPUT_DIR}/${SAMPLE_NAME}_trimmed_R2.fastq.gz \
             ftm=5 \
             t=32
 
-        # adapter trimming
         bbduk.sh \
-            in1=${OUTPUT_DIR}/${BASENAME}_trimmed_R1.fastq.gz \
-            in2=${OUTPUT_DIR}/${BASENAME}_trimmed_R2.fastq.gz \
-            out1=${OUTPUT_DIR}/${BASENAME}_tbo_R1.fastq.gz \
-            out2=${OUTPUT_DIR}/${BASENAME}_tbo_R2.fastq.gz \
+            in1=${OUTPUT_DIR}/${SAMPLE_NAME}_trimmed_R1.fastq.gz \
+            in2=${OUTPUT_DIR}/${SAMPLE_NAME}_trimmed_R2.fastq.gz \
+            out1=${OUTPUT_DIR}/${SAMPLE_NAME}_tbo_R1.fastq.gz \
+            out2=${OUTPUT_DIR}/${SAMPLE_NAME}_tbo_R2.fastq.gz \
             tbo tpe k=23 mink=11 hdist=1 ktrim=r \
             t=32
 
         # remove Phix contamination
         bbduk.sh \
-            in1=${OUTPUT_DIR}/${BASENAME}_tbo_R1.fastq.gz \
-            in2=${OUTPUT_DIR}/${BASENAME}_tbo_R2.fastq.gz \
-            out1=${OUTPUT_DIR}/${BASENAME}_phix_removed_R1.fastq.gz \
-            out2=${OUTPUT_DIR}/${BASENAME}_phix_removed_R2.fastq.gz \
+            in1=${OUTPUT_DIR}/${SAMPLE_NAME}_tbo_R1.fastq.gz \
+            in2=${OUTPUT_DIR}/${SAMPLE_NAME}_tbo_R2.fastq.gz \
+            out1=${OUTPUT_DIR}/${SAMPLE_NAME}_phix_removed_R1.fastq.gz \
+            out2=${OUTPUT_DIR}/${SAMPLE_NAME}_phix_removed_R2.fastq.gz \
             ref=~/software/bbmap/resources/phix174_ill.ref.fa.gz \
             k=31 hdist=1 \
             t=32
 
-        # quality filtering
+        # filter low quality reads
         bbduk.sh \
-            in1=${OUTPUT_DIR}/${BASENAME}_phix_removed_R1.fastq.gz \
-            in2=${OUTPUT_DIR}/${BASENAME}_phix_removed_R2.fastq.gz \
-            out1=${OUTPUT_DIR}/${BASENAME}_final_R1.fastq.gz \
-            out2=${OUTPUT_DIR}/${BASENAME}_final_R2.fastq.gz \
+            in1=${OUTPUT_DIR}/${SAMPLE_NAME}_phix_removed_R1.fastq.gz \
+            in2=${OUTPUT_DIR}/${SAMPLE_NAME}_phix_removed_R2.fastq.gz \
+            out1=${OUTPUT_DIR}/${SAMPLE_NAME}_final_R1.fastq.gz \
+            out2=${OUTPUT_DIR}/${SAMPLE_NAME}_final_R2.fastq.gz \
             qtrim=rl trimq=15 minlength=30 \
             t=32
 
         # delete intermediate files
-        rm $MERGED_R1 $MERGED_R2 \
-        ${OUTPUT_DIR}/${BASENAME}_trimmed_*.fastq.gz \
-        ${OUTPUT_DIR}/${BASENAME}_tbo_*.fastq.gz \
-        ${OUTPUT_DIR}/${BASENAME}_phix_removed_*.fastq.gz
+        rm ${OUTPUT_DIR}/${SAMPLE_NAME}_trimmed_*.fastq.gz \
+           ${OUTPUT_DIR}/${SAMPLE_NAME}_tbo_*.fastq.gz \
+           ${OUTPUT_DIR}/${SAMPLE_NAME}_phix_removed_*.fastq.gz
 
-        echo "Finished processing $BASENAME"
+        echo "Finished processing $SAMPLE_NAME (Lane $LANE)"
     done
+
 Keeping the output files from quality filtering.
     
 </details>
