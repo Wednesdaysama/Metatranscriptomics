@@ -198,4 +198,5 @@ Again, I have to submit this Slurm job after activating a conda env. Also, do no
 ## Mapping </summary>
 Folder /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags contains 91 soda lake genomes.
 
-seal.sh in=LY-FallRNA-MatSite3_S23_merged_non_rRNA_reads.fq.gz /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/*.fna stats=sealstats.txt rpkm=sealrpkm.txt ambig=random
+    seal.sh in=LY-FallRNA-MatSite3_S23_merged_non_rRNA_reads.fq.gz /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/*.fna stats=sealstats.txt rpkm=sealrpkm.txt ambig=random
+    LY-FallRNA-MatSite4_S6_merged_non_rRNA_reads.fq.gz
