@@ -195,7 +195,7 @@ Again, I have to submit this Slurm job after activating a conda env. Also, do no
 <details>
 <summary>
 
-## Mapping </summary>
+## Mapping - [seal.sh BBMap](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/seal-guide/) </summary>
 
 Downloading 91 MAGs according to [Zorz et al., 2019](https://www.nature.com/articles/s41467-019-12195-5#Sec17), Supplementary Data 2.
 Annotating these MAGs by using [MetaErg 2.5.8](https://github.com/kinestetika/MetaErg).
