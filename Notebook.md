@@ -201,6 +201,36 @@ Downloading 91 MAGs according to [Zorz et al., 2019](https://www.nature.com/arti
 Annotating these MAGs by using [MetaErg 2.5.8](https://github.com/kinestetika/MetaErg).
 Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/sqlite.py). The generated *.fa files are used for mapping.
 
+### seal.slurm
+    #!/bin/bash
+    #SBATCH --job-name=seal
+    #SBATCH --output=%x.log
+    #SBATCH --nodes=1
+    #SBATCH --ntasks=1
+    #SBATCH --cpus-per-task=32
+    #SBATCH --mem=100G
+    #SBATCH --time=150:00:00
+    #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
+    #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
+    pwd; hostname; date
+           
+    cd /work/ebg_lab/eb/overwinter/2025Apr/seperate_lanes_bbduk
+    
+    samples=$(ls *_non_rRNA_reads.fq.gz | sed 's/_L00[1-2]_non_rRNA_reads.fq.gz//' | sort -u)
+    for sample in $samples; do
+        echo "Processing $sample..."
 
-    seal.sh in=LY-FallRNA-MatSite3_S23_merged_non_rRNA_reads.fq.gz /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/annotations.sqlite/*.fa stats=sealstats.txt rpkm=sealrpkm.txt ambig=random
-    LY-FallRNA-MatSite4_S6_merged_non_rRNA_reads.fq.gz
+        merged_file="${sample}_merged_non_rRNA_reads.fq.gz"
+        cat "${sample}_L001_non_rRNA_reads.fq.gz" "${sample}_L002_non_rRNA_reads.fq.gz" > "$merged_file"
+
+        echo "Running seal.sh on $merged_file..."
+        seal.sh \
+            in="$merged_file" \
+            /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/annotations.sqlite/*.fa \
+            stats="sealstats_${sample}.txt" \
+            rpkm="sealrpkm_${sample}.txt" \
+            ambig=random
+        echo "Done with $sample."
+    done
+
+
