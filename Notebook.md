@@ -219,10 +219,8 @@ Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednes
     samples=$(ls *_non_rRNA_reads.fq.gz | sed 's/_L00[1-2]_non_rRNA_reads.fq.gz//' | sort -u)
     for sample in $samples; do
         echo "Processing $sample..."
-
         merged_file="${sample}_merged_non_rRNA_reads.fq.gz"
         cat "${sample}_L001_non_rRNA_reads.fq.gz" "${sample}_L002_non_rRNA_reads.fq.gz" > "$merged_file"
-
         echo "Running seal.sh on $merged_file..."
         seal.sh \
             in="$merged_file" \
@@ -232,5 +230,7 @@ Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednes
             ambig=random
         echo "Done with $sample."
     done
+
+Directory /work/ebg_lab/eb/overwinter/2025Apr/seperate_lanes_bbduk contains the *non_rRNA__reads.fq.gz files from Sortmerna. Reference MAGs are in /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/annotations.sqlite.
 
 
