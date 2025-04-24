@@ -199,8 +199,8 @@ Again, I have to submit this Slurm job after activating a conda env. Also, do no
 
 Downloading 91 MAGs according to [Zorz et al., 2019](https://www.nature.com/articles/s41467-019-12195-5#Sec17), Supplementary Data 2.
 Annotating these MAGs by using [MetaErg 2.5.8](https://github.com/kinestetika/MetaErg).
-Extracting nt_seq from SQLite databases by [sqlite.py](). The generated *.fa files are used for mapping.
+Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/sqlite.py). The generated *.fa files are used for mapping.
 
 
-    seal.sh in=LY-FallRNA-MatSite3_S23_merged_non_rRNA_reads.fq.gz /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/*.fna stats=sealstats.txt rpkm=sealrpkm.txt ambig=random
+    seal.sh in=LY-FallRNA-MatSite3_S23_merged_non_rRNA_reads.fq.gz /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/annotations.sqlite/*.fa stats=sealstats.txt rpkm=sealrpkm.txt ambig=random
     LY-FallRNA-MatSite4_S6_merged_non_rRNA_reads.fq.gz
