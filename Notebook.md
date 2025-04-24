@@ -209,7 +209,7 @@ Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednes
     #SBATCH --ntasks=1
     #SBATCH --cpus-per-task=32
     #SBATCH --mem=100G
-    #SBATCH --time=150:00:00
+    #SBATCH --time=04:00:00
     #SBATCH --mail-user=lianchun.yi1@ucalgary.ca  # Send the job information to this email
     #SBATCH --mail-type=ALL                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
