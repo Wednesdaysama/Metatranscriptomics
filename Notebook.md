@@ -233,7 +233,7 @@ Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednes
 
 Directory /work/ebg_lab/eb/overwinter/2025Apr/seperate_lanes_bbduk contains the *non_rRNA__reads.fq.gz files from Sortmerna. Reference MAGs are in /work/ebg_lab/eb/overwinter/2025Apr/soda_lake_mags/annotations.sqlite.
 
-File sealrpkm_*.txt contains RPKM (Reads Per Kilobase Million) values. Run tpm.py to calculate the TPM (Transcripts Per Kilobase Million). Here are the steps for calculating the TPM values:
+File sealrpkm_*.txt contains RPKM (Reads Per Kilobase Million) values. Run tpm.py to calculate the [TPM (Transcripts Per Kilobase Million)](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/tpm.py). Here are the steps for calculating the TPM values:
 
 1. Divide the read counts by the length of each gene in kilobases. This gives you reads per kilobase (RPK).
    
