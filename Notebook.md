@@ -1,5 +1,5 @@
 ##### Launch an interactive session on ARC
-    salloc --mem=20G -c 1 -N 1 -n 1  -t 04:00:00
+    salloc --mem=20G -c 16 -N 1 -n 1  -t 04:00:00
 
 <details>
 <summary> 
