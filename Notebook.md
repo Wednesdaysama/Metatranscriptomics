@@ -241,7 +241,7 @@ File sealrpkm_*.txt contains RPKM (Reads Per Kilobase Million) values. Run [tpm.
 
 3. Divide the RPK values by the “per million” scaling factor. This gives you TPM.
 
-Download the tpm_all.xlsx file, and run transcription_number.py locally.
+Download the tpm_all.xlsx file, and run transcription_number.py and species_TPM.py locally.
 
     
 
