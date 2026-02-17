@@ -202,7 +202,7 @@ Annotating these MAGs by using [MetaErg 2.5.8](https://github.com/kinestetika/Me
 Extracting nt_seq from SQLite databases by [sqlite.py](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/sqlite.py). The generated *.fa files are used for mapping.
 
 ### seal.slurm
-    #!/bin/bash
+    #!/bin/bash 
     #SBATCH --job-name=seal
     #SBATCH --output=%x.log
     #SBATCH --nodes=1
