@@ -250,6 +250,7 @@ Download the tpm_all.xlsx file, and run [transcription_number.py](https://github
 <summary> 
     
 ## Detecting quality checked and aligned ribosomal RNA sequence datas - Silva [online](https://www.arb-silva.de) / [local](https://github.com/epruesse/SINA) </summary>
+
 ### Installation
 
     module load bioconda/2024-10
@@ -257,5 +258,6 @@ Download the tpm_all.xlsx file, and run [transcription_number.py](https://github
     conda activate sina
 
 ### .slurm
+
 </details>
 
