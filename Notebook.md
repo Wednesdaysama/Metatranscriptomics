@@ -264,8 +264,55 @@ Reference databases (Release 138.2) for [small (16S/18S)](https://www.arb-silva.
 
     gunzip SILVA_138.2_SSURef_NR99_03_07_24_opt.arb.gz
 
-### .slurm
+### silva.slurm
 All rRNA sequences have been moved from the previous analysis folders to /work/ebg_lab/eb/overwinter/rRNA/.
+
+    #!/bin/bash
+    #SBATCH --job-name=silva
+    #SBATCH --output=%x.log
+    #SBATCH --nodes=1
+    #SBATCH --ntasks=1
+    #SBATCH --cpus-per-task=16
+    #SBATCH --mem=100G
+    #SBATCH --time=050:00:00
+    #SBATCH --mail-user=lianchun.yi1@ucalgary.ca
+    #SBATCH --mail-type=END                       # Send the type: <BEGIN><FAIL><END>
+    pwd; hostname; date
+
+
+    SILVA_DB="/work/ebg_lab/referenceDatabases/silva_db/SILVA_138.2_SSURef_NR99_03_07_24_opt.arb"
+    READS_DIR="/work/ebg_lab/eb/overwinter/rRNA"
+    THREADS=16
+
+    OUT_DIR="${READS_DIR}/sina_results"
+    mkdir -p ${OUT_DIR}
+
+    for fq in ${READS_DIR}/*.fq.gz; do
+        SAMPLE=$(basename ${fq} .fq.gz)
+        MERGED_FA="${OUT_DIR}/${SAMPLE}.fasta"
+        SINA_OUT="${OUT_DIR}/${SAMPLE}_aligned.fasta"
+
+        echo "processing: ${SAMPLE}"
+
+        # FASTQ -> FASTA
+        echo "convert FASTQ to FASTA..."
+        seqtk seq -a ${fq} > ${MERGED_FA}
+
+        # SINA
+        echo "SINA comparison..."
+        sina -i ${MERGED_FA} \
+             -o ${SINA_OUT} \
+             --db ${SILVA_DB} \
+             --meta-fmt csv \
+             --threads ${THREADS}
+
+        echo "Sample ${SAMPLE} has been finished."
+    done
+
+    echo "Done."
+
+
+
 
 </details>
 
