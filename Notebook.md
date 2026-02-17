@@ -256,8 +256,12 @@ Download the tpm_all.xlsx file, and run [transcription_number.py](https://github
     module load bioconda/2024-10
     conda create -n sina sina
     conda activate sina
+    sina -h
+
+User manual can be found [here](https://sina.readthedocs.io/en/latest/commandline.html).
 
 ### .slurm
+All rRNA sequences have been moved from the previous analysis folders to /work/ebg_lab/eb/overwinter/rRNA/.
 
 </details>
 
