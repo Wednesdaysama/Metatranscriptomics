@@ -244,7 +244,17 @@ File sealrpkm_*.txt contains RPKM (Reads Per Kilobase Million) values. Run [tpm.
 
 Download the tpm_all.xlsx file, and run [transcription_number.py](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/transcription_number.py) and [species_TPM.py](https://github.com/Wednesdaysama/Metatranscriptomics/blob/main/species_TPM.py) locally.
 
-    
+</details>
 
+<details>
+<summary> 
+## Detecting quality checked and aligned ribosomal RNA sequence datas - Silva [online](https://www.arb-silva.de) / [local](https://github.com/epruesse/SINA) </summary>
+### Installation
 
+    module load bioconda/2024-10
+    conda create -n sina sina
+    conda activate sina
+
+### .slurm
+</details>
 
