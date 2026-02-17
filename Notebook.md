@@ -248,6 +248,7 @@ Download the tpm_all.xlsx file, and run [transcription_number.py](https://github
 
 <details>
 <summary> 
+    
 ## Detecting quality checked and aligned ribosomal RNA sequence datas - Silva [online](https://www.arb-silva.de) / [local](https://github.com/epruesse/SINA) </summary>
 ### Installation
 
