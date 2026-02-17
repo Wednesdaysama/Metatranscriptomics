@@ -260,6 +260,8 @@ Download the tpm_all.xlsx file, and run [transcription_number.py](https://github
 
 User manual can be found [here](https://sina.readthedocs.io/en/latest/commandline.html).
 
+Reference databases (Release 138.2) for small (16S/18S) and for large (23S/28S) subunit ribosomal RNAs have been downloaded to /work/ebg_lab/referenceDatabases/silva_db.
+
 ### .slurm
 All rRNA sequences have been moved from the previous analysis folders to /work/ebg_lab/eb/overwinter/rRNA/.
 
