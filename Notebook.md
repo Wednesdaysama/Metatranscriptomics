@@ -267,49 +267,31 @@ Reference databases (Release 138.2) for [small (16S/18S)](https://www.arb-silva.
 ### silva.slurm
 All rRNA sequences have been moved from the previous analysis folders to /work/ebg_lab/eb/overwinter/rRNA/.
 
+Again, for some reason, I have to activate the virtual env first...
+
+    conda activate sina
+
+Then, run the script.
+
     #!/bin/bash
-    #SBATCH --job-name=silva
+    #SBATCH --job-name=Fall-Mat3
     #SBATCH --output=%x.log
     #SBATCH --nodes=1
     #SBATCH --ntasks=1
-    #SBATCH --cpus-per-task=16
-    #SBATCH --mem=100G
-    #SBATCH --time=050:00:00
+    #SBATCH --cpus-per-task=32
+    #SBATCH --mem=30G              # 10G for a 337M file
+    #SBATCH --time=80:00:00        # 30 h for a 337M file
     #SBATCH --mail-user=lianchun.yi1@ucalgary.ca
     #SBATCH --mail-type=END                       # Send the type: <BEGIN><FAIL><END>
     pwd; hostname; date
 
+    INPUT="/work/ebg_lab/eb/overwinter/rRNA/LY-FallRNA-MatSite3_S23_rRNA_merged.fq.gz"
+    OUTPUT="/work/ebg_lab/eb/overwinter/rRNA/Fall-Mat3_classified.csv"
 
-    SILVA_DB="/work/ebg_lab/referenceDatabases/silva_db/SILVA_138.2_SSURef_NR99_03_07_24_opt.arb"
-    READS_DIR="/work/ebg_lab/eb/overwinter/rRNA"
-    THREADS=16
+    DB="/work/ebg_lab/referenceDatabases/silva_db/SILVA_138.2_SSURef_NR99_03_07_24_opt.arb"
 
-    OUT_DIR="${READS_DIR}/sina_results"
-    mkdir -p ${OUT_DIR}
-
-    for fq in ${READS_DIR}/*.fq.gz; do
-        SAMPLE=$(basename ${fq} .fq.gz)
-        MERGED_FA="${OUT_DIR}/${SAMPLE}.fasta"
-        SINA_OUT="${OUT_DIR}/${SAMPLE}_aligned.fasta"
-
-        echo "processing: ${SAMPLE}"
-
-        # FASTQ -> FASTA
-        echo "convert FASTQ to FASTA..."
-        seqtk seq -a ${fq} > ${MERGED_FA}
-
-        # SINA
-        echo "SINA comparison..."
-        sina -i ${MERGED_FA} \
-             -o ${SINA_OUT} \
-             --db ${SILVA_DB} \
-             --meta-fmt csv \
-             --threads ${THREADS}
-
-        echo "Sample ${SAMPLE} has been finished."
-    done
-
-    echo "Done."
+    zcat "$INPUT" | seqtk seq -A - | \
+    sina --threads 32 -i - -r "$DB" -o "$OUTPUT" --outtype csv --search --search-max-result 1 --lca-fields tax_slv
 
 
 
