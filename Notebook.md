@@ -293,6 +293,45 @@ Then, run the script.
     zcat "$INPUT" | seqtk seq -A - | \
     sina --threads 32 -i - -r "$DB" -o "$OUTPUT" --outtype csv --search --search-max-result 1 --lca-fields tax_slv
 
+Output files are hard to read. Run **extraction.sh** to calculate the percentages of Bacteria, Archaea, and Eukaryota in one sample
+
+### extraction.sh
+
+    awk '
+    BEGIN{
+        total=0
+        b=0
+        a=0
+        e=0
+    }
+
+    {
+        total++
+
+        if(match($0,/,Bacteria([^,]+)/,x)){
+            val="Bacteria" x[1]
+            print val
+            b++
+        }
+        else if(match($0,/,Archaea([^,]+)/,y)){
+            val="Archaea" y[1]
+            print val
+            a++
+        }
+        else if(match($0,/,Eukaryota([^,]+)/,z)){
+            val="Eukaryota" z[1]
+            print val
+            e++
+        }
+    }
+
+    END{
+        print b/total
+        print a/total
+        print e/total
+    }
+    ' Sum-Sed9M1_classified.csv > Sum-Sed9M1_classified.txt
+
 
 
 
