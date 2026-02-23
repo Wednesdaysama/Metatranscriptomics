@@ -332,10 +332,11 @@ Output files are hard to read. Run **extraction.sh** to calculate the percentage
     }
     ' "$1" > "${1%.csv}.txt"
 
-Files will be saved to ~/data/sediments_transcriptomics/
+Run: 
 
-    bash run.sh Sum-Sed9M1_classified.csv
-    tail Sum-Sed9M1_classified.csv
+    bash extraction.sh Sum-Sed9M1_classified.csv
+    tail Sum-Sed9M1_classified.txt
+    rm Sum-Sed9M1_classified.csv
 
 
 </details>
