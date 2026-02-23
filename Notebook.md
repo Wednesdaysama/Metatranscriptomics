@@ -330,9 +330,12 @@ Output files are hard to read. Run **extraction.sh** to calculate the percentage
         print a/total
         print e/total
     }
-    ' Sum-Sed9M1_classified.csv > Sum-Sed9M1_classified.txt
+    ' "$1" > "/home/lianchun.yi1/data/sediments_transcriptomics/rRNA/${1%.csv}.txt"
 
+Files will be saved to ~/data/sediments_transcriptomics/
 
+    bash run.sh Sum-Sed9M1_classified.csv
+    tail Sum-Sed9M1_classified.csv
 
 
 </details>
