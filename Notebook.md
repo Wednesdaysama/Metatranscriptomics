@@ -330,7 +330,7 @@ Output files are hard to read. Run **extraction.sh** to calculate the percentage
         print a/total
         print e/total
     }
-    ' "$1" > "/home/lianchun.yi1/data/sediments_transcriptomics/rRNA/${1%.csv}.txt"
+    ' "$1" > "${1%.csv}.txt"
 
 Files will be saved to ~/data/sediments_transcriptomics/
 
