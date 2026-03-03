@@ -338,7 +338,13 @@ Run:
     tail Sum-Sed9M1_classified.txt
     rm Sum-Sed9M1_classified.csv
 
-Active source ~/bio/bin/3.10_python-env/bin/activate first. Run [phylm_level.py]() to get the relative abundance of eukaryota in each sample.
+Active Python 3.10 env and run [phylm_level.py]() to get the relative abundance of eukaryota in each sample.
+
+    salloc --mem=20G -c 16 -N 1 -n 1  -t 04:00:00
+    source ~/bio/bin/3.10_python-env/bin/activate
+    python phylm_level.py
+
+Output file is named as Euk_RelaAbun.csv.
 
 </details>
 
