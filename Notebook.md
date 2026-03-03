@@ -338,7 +338,7 @@ Run:
     tail Sum-Sed9M1_classified.txt
     rm Sum-Sed9M1_classified.csv
 
-Run [phylm_level.py]() to get the relative abundance of eukaryota in each sample.
+Active source ~/bio/bin/3.10_python-env/bin/activate first. Run [phylm_level.py]() to get the relative abundance of eukaryota in each sample.
 
 </details>
 
